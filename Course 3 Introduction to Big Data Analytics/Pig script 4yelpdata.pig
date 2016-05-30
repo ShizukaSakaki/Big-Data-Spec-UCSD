@@ -42,3 +42,18 @@ Y_m = FOREACH Y_g
          
 Y_rnk = RANK Y_m BY avg_wtdstars;
 
+
+---Quiz Code
+Y_m2 = FILTER Y_m BY (num_ratings > 1);
+Y_g2 = GROUP Y_m2 ALL;
+Y_m2avg = FOREACH Y_g2 GENERATE AVG(Y_m2.avg_wtdstars);
+
+Y_rate_join = JOIN Y_rate2 BY business_id, Y_m2 BY business_idgroup;
+All_Y_rate = GROUP Y_rate_join ALL;
+Y_rate_avg = FOREACH All_Y_rate GENERATE AVG(Y_rate_join.Y_rate2::wtd_stars);
+
+Ygf = FOREACH Y_g GENERATE COUNT(Y_rate2.stars) as num_rated, Y_rate2.wtd_stars as wtd_stars2use;
+Ygf_gt1 = FILTER Ygf BY num_rated>1;
+Y_next = FOREACH Ygf_gt1 GENERATE FLATTEN(wtd_stars2use) AS your_filled_in_field;
+Yg2 = GROUP Y_next ALL;
+A2 = FOREACH Yg2 GENERATE AVG(your_filled_in_field);
