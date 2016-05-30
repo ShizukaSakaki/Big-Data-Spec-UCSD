@@ -1,4 +1,6 @@
 -- *******   PIG LATIN SCRIPT for Yelp Assignmet ******************
+-- unix > head -1 /usr/lib/hue/apps/search/examples/collections/solr_configs_yelp_demo/index_data.csv
+-- unix> hdfs dfs -copyFromLocal /usr/lib/hue/apps/search/examples/collections/solr_configs_yelp_demo/index_data.csv /user/cloudera/input/yelp_data.csv
 
 -- 0. get function defined for CSV loader
 
