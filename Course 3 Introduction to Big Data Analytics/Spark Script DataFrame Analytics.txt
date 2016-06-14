@@ -1,0 +1,14 @@
+PYSPARK_DRIVER_PYTHON=ipython pyspark --packages com.databricks:spark-csv_2.10:1.2.0
+
+yelp_df = sqlCtx.load(source="com.databricks.spark.csv",header="true",inferSchema="true",path="/user/cloudera/input/yelp_data.csv")
+
+yelp_df.agg({"cool":"mean"}).collect()
+
+yelp_df.filter("review_count >= 10").groupBy("stars").avg("cool").show()
+
+yelp_df.filter( "review_count >= 10").filter("open = true").groupBy("stars").avg("cool").show()
+
+from pyspark.sql.functions import asc, desc
+yelp_df.filter( "review_count >= 10").filter("open = true").groupBy("state").count().orderBy(desc("count")).show()
+
+yelp_df.groupBy("business_id").count().orderBy(desc("count")).show()
